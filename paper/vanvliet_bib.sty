@@ -1,0 +1,15 @@
+% Bibliography formatting commands
+
+% Set DOIs in small mono type in the margin
+\DeclareFieldFormat{doi}{%
+  \marginnote{\footnotesize\textsf{doi\addcolon
+  \ifhyperref
+    {\href{https://dx.doi.org/#1}{#1}}
+    {#1}}}}
+
+% Set arXiv links in small mono type in the margin
+\DeclareFieldFormat{eprint}{%
+  \marginnote{\footnotesize\textsf{arXiv\addcolon
+  \ifhyperref
+    {\href{https://arxiv.org/abs/#1}{#1}}
+    {#1}}}}

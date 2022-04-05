@@ -1,0 +1,29 @@
+% Some convenience commands when writing equations with lots of matrices
+
+\newcommand{\bm}[1]{\mathbf{#1}}
+\newcommand{\mat}[1]{\bm{#1}}
+\renewcommand{\vec}[1]{\bm{#1}}
+\newcommand{\tmat}[1]{$\bm{#1}$}
+\newcommand{\tvec}[1]{$\bm{#1}$}
+\newcommand{\emat}[1]{\widehat{\bm{#1}}}
+\newcommand{\evec}[1]{\widehat{\bm{#1}}}
+\newcommand{\temat}[1]{$\widehat{\bm{#1}}$}
+\newcommand{\tevec}[1]{{$\widehat{\bm{#1}}$}}
+\newcommand{\trans}{^{\mkern-1.5mu\mathsf{T}}}
+\newcommand{\hermconj}{^{\mathsf{H}}}
+
+\newcommand{\explain}[3]{$#1 \in \mathbb{R}^{#2 \times #3}$}
+\newcommand{\explainmat}[3]{$\mat{#1} \in \mathbb{R}^{#2 \times #3}$}
+\newcommand{\explainvec}[3]{$\vec{#1} \in \mathbb{R}^{#2 \times #3}$}
+
+\newcommand{\cov}[1]{\mat{\Sigma}_{\mat{#1}}}
+\newcommand{\tcov}[1]{$\mat{\Sigma}_{\mat{#1}}$}
+\newcommand{\ecov}[1]{\widehat{\mat{\Sigma}}_{\mat{#1}}}
+\newcommand{\tecov}[1]{$\widehat{\mat{\Sigma}}_{\mat{#1}}$}
+\newcommand{\icov}[1]{\mat{\Sigma}^{-1}_{\mat{#1}}}
+\newcommand{\ticov}[1]{$\mat{\Sigma}^{-1}_{\mat{#1}}$}
+
+% Other math operators
+\newcommand{\var}{\operatorname{var}}
+\newcommand{\argmax}[1]{\underset{#1}{\operatorname{arg}\,\operatorname{max}}\;}
+\newcommand{\argmin}[1]{\underset{#1}{\operatorname{arg}\,\operatorname{min}}\;}

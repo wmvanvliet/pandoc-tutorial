@@ -1,0 +1,242 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Assume everything is in utf-8 encoding
+\RequirePackage[utf8]{inputenc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PDF setup
+%
+% Graphics and color
+\RequirePackage[pdftex]{graphicx}
+\RequirePackage{xcolor} 
+
+\RequirePackage[pdftex, bookmarks, colorlinks, breaklinks]{hyperref}
+\definecolor{darkblue}{rgb}{0,0,.4}
+\hypersetup{
+    linkcolor=darkblue,
+    citecolor=darkblue,
+    filecolor=black,
+    urlcolor=black
+}
+\makeatletter
+\AtBeginDocument{
+    \hypersetup{
+        pdftitle = {\@title},
+        pdfauthor = {\@author}
+    }
+}
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sizes and margins
+
+% For clarity, I prefer white space between the paragraphs
+\RequirePackage[parfill]{parskip}
+
+% Increase line spacing a bit
+%\RequirePackage{setspace}
+%\onehalfspacing
+
+% Text layout
+\RequirePackage[
+	left=1cm,
+	right=6.5cm,
+	top=1.5cm,
+	bottom=2.5cm,
+	marginparwidth=5cm,
+	marginparsep=0.5cm,
+]{geometry}
+
+% Move page footer to use the full extend of the page
+\RequirePackage{fancyhdr}
+\fancyhfoffset{1cm}
+
+% Commands to enable/disable the margin
+\newcommand{\disablemargin}{
+	\newgeometry{
+		inner=2cm,
+		outer=2cm
+	}
+	\fancyhfoffset{0cm}
+}
+\newcommand{\enablemargin}{
+	\restoregeometry
+	\fancyhfoffset{5cm}
+}
+
+% Environment that disables the margin
+\newenvironment{nomargin}{
+	\disablemargin
+}{
+	\enablemargin
+}
+
+% Blank pages
+\RequirePackage{xspace}
+\RequirePackage{afterpage}
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    %\addtocounter{page}{-1}%
+    \newpage}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Figure and table captions
+
+\RequirePackage{floatrow}
+\RequirePackage{caption}
+
+% For narrow floats, place caption in the margin
+\floatsetup{
+	margins=hangright,
+	capposition=beside,
+    capbesideposition={top,right},
+    floatwidth=\textwidth
+}
+\captionsetup{
+	labelfont=bf,
+	font=small
+}
+
+% For wide floats, place caption below the float
+\floatsetup[widefloat]{
+	capposition=bottom,
+    floatwidth=\textwidth
+}
+\floatsetup[widefigure]{
+	captionskip=-1ex
+}
+\captionsetup[widefloat]{
+	margin=1.5cm
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fonts
+
+% Math symbols
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage[nice]{nicefrac}
+\RequirePackage{siunitx}
+
+% Main font
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{fourier}
+%\RequirePackage{droidserif}
+%\RequirePackage{tgtermes}
+
+\RequirePackage{url}
+\urlstyle{sf}
+
+\RequirePackage{microtype}
+
+% Code listings
+\usepackage{listings}
+\usepackage{inconsolata}
+\definecolor{codebackground}{rgb}{0.9,0.9,0.9}
+\definecolor{comment}{rgb}{0.25,0.25,0.25}
+\lstset{
+    basicstyle=\ttfamily\small,
+    keepspaces=true,
+    columns=fullflexible,
+    upquote=true,
+    language=Python,
+    belowskip=0pt,
+    commentstyle=\color{comment}
+}
+\newcommand{\code}[1]{\lstinline{#1}}
+
+% Drop caps
+\usepackage{lettrine}
+\newcommand{\dropcap}[2]{\lettrine[lines=2, loversize=0.03, findent=0.75ex, nindent=-1ex]{\textcolor[gray]{0.2}{#1}}{#2}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Acronyms
+
+\RequirePackage[smallcaps, acronym, nonumberlist]{glossaries}
+\glsdisablehyper
+\let\oldsc\textsc
+\renewcommand{\textsc}[1]{\oldsc{\mdseries #1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Headers and footers
+
+\RequirePackage{lastpage}
+\pagestyle{fancy}
+
+\fancyhead{}
+\fancyfoot{}
+\fancyfoot[R]{page \thepage\ of \pageref*{LastPage}}
+
+\renewcommand{\headrulewidth}{0pt}
+
+% Chapter pages
+\fancypagestyle{plain}{
+	\fancyhf{} % clear all header and footer fields
+	\rfoot{\thepage}
+}
+
+% Page numbers
+\RequirePackage{xspace}
+\RequirePackage{afterpage}
+
+\RequirePackage{booktabs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Section headers
+
+\RequirePackage{titlesec}  
+
+\titlespacing*{\section}{0pt}{0.2cm}{0cm}
+\titlespacing*{\subsubsection}{0pt}{2ex}{0cm}
+
+% Section numbers are printed somewhat smaller and in the margin
+\makeatletter
+\renewcommand{\@seccntformat}[1]{\llap{\csname the#1\endcsname
+\hspace{0.5em}}}
+\makeatother
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% References within the document
+
+\def\figureautorefname{Figure}
+\def\tableautorefname{Table}
+\def\equationautorefname{equation}
+\def\subsectionautorefname{section}
+\def\subsubsectionautorefname{section}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some convenience commands
+
+\RequirePackage{matrix_commands}
+\newcommand{\etc}{etc\@ifnextchar.{}{.{}}}
+\newcommand{\etal}{\textit{et~al.\xspace}}
+\newcommand{\eg}{e.g.{}}
+\newcommand{\vs}{vs.\xspace}
+\newcommand{\ie}{i.e.{}}
+\newcommand{\cf}{cf.{}}
+
+% Various boxes
+\RequirePackage{framed}
+\setlength{\OuterFrameSep}{1ex}
+\definecolor{todo-background}{rgb}{1,.8,.8}
+\definecolor{todo-foreground}{rgb}{1,0,0}
+\newcommand{\todo}[1]{
+
+    \colorbox{todo-background}{\color{todo-foreground}TODO:\ #1}
+
+}
+
+\definecolor{note-background}{rgb}{.7,.7,.7}
+\definecolor{note-foreground}{rgb}{0,0,0}
+\definecolor{note-frame}{rgb}{0,0,0}
+\newcommand{\note}[1]{
+
+    \fcolorbox{note-frame}{note-background}{\color{note-foreground}#1}
+
+}
