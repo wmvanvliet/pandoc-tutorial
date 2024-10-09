@@ -253,9 +253,38 @@ We should now have properly rendered math symbols:
 ![](https://i.imgur.com/3LmJCBa.png)
 
 
+## Fixing authors and affiliations
+
+The LaTeX file uses the `authblk` package to handle proper formatting of authors and their affiliations using the `\author` and `\affil` commands.
+Pandoc doesn't handle this package well, not showing the affiliations properly, and worse, not putting them in the AST at all!
+So this is another thing we need to fix in the preprocessing script.
+The idea is to collect author and affiliation strings as we read each line of LaTeX input and when we see the `\maketitle` command, inject the proper strings:
+
+```python
+author_pattern = re.compile(r"\\author\[(.*)\]{(.*)}")
+affil_pattern = re.compile(r"\\affil\[(.*)\]{(.*)}")
+
+authors = list()
+affiliations = list()
+for line in file_in:
+    # Deal with authors and affiliations
+    if match := author_pattern.search(line):
+        annot, author = match.groups()
+        authors.append(f"{author}$^{{{annot}}}$")
+        continue
+    if match := affil_pattern.search(line):
+        annot, affil = match.groups()
+        affiliations.append(f"$^{{{annot}}}${affil}")
+        continue
+    if line.strip() == r"\maketitle":
+        file_out.write(r"\author{" + ", ".join(authors) + "\\\\\n")
+        file_out.write("\\\\\n".join(affiliations) + "}\n")
+```
+
+
 ## Embedding PDF figures
 
-We now find that Pandoc attempts to include the figures, and cannot find them!
+We also find that Pandoc attempts to include the figures, and cannot find them!
 This is because the `\includegraphics` commands in the `.tex` file assume LaTeX is run in the `paper` folder, whereas we are running Pandoc in the root folder.
 This can be fixed by passing the `--resource-dir` argument to tell Pandoc where to look for files to include:
 

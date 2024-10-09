@@ -26,11 +26,29 @@ patterns = [
     (re.compile(r'\\vspace{2ex}'), r''),
 ]
 
+author_pattern = re.compile(r"\\author\[(.*)\]{(.*)}")
+affil_pattern = re.compile(r"\\affil\[(.*)\]{(.*)}")
+
 file_in = open('paper/beamformer_framework.tex')
 file_out = open('beamformer_framework_pandoc.tex', 'w')
 
-# Perform search-and-replace line by line
+authors = list()
+affiliations = list()
 for line in file_in:
+    # Deal with authors and affiliations
+    if match := author_pattern.search(line):
+        annot, author = match.groups()
+        authors.append(f"{author}$^{{{annot}}}$")
+        continue
+    if match := affil_pattern.search(line):
+        annot, affil = match.groups()
+        affiliations.append(f"$^{{{annot}}}${affil}")
+        continue
+    if line.strip() == r"\maketitle":
+        file_out.write(r"\author{" + ", ".join(authors) + "\\\\\n")
+        file_out.write("\\\\\n".join(affiliations) + "}\n")
+
+    # Perform search-and-replace line by line
     for pat, rep in patterns:
         line = pat.sub(rep, line)
     file_out.write(line.strip() + '\n')
