@@ -39,7 +39,7 @@ def load_acronyms():
     manually.
     """
     pattern = re.compile(r"\\newacronym(\[.*\])?\{(?P<label>[A-Za-z]+)\}\{.+\}\{(?P<value>[A-Za-z 0-9\-]+)\}")
-    
+
     d = os.path.dirname(__file__)
     filename = os.path.join(d, 'paper/acronyms.tex')
     with open(filename, 'r', encoding='utf-8') as acronymsFile:
@@ -56,34 +56,34 @@ def resolve_acronyms(elem, doc):
     """
     if isinstance(elem, Span) and "acronym-label" in elem.attributes:
         label = elem.attributes["acronym-label"]
-        
+
         if label in acronyms:
             # this is the case: "singular" in form and "long" in form:
             value = acronyms[label]
-            
+
             form = elem.attributes["acronym-form"]
             if label in refcounts and "short" in form:
                 if "singular" in form:
                     value = label
                 else:
                     value = label + "s"
-            
+
             elif "full" in form or "short" in form:
                 # remember that label has been used
                 if "short" in form:
                     refcounts[label] = True
-                
+
                 if "singular" in form:
                     value = value + " (" + label + ")"
                 else:
                     value = value + "s (" + label + "s)"
-            
+
             elif "abbrv" in form:
                 if "singular" in form:
                     value = label
                 else:
                     value = label + "s"
-            
+
             return Span(Str(value))
 
 
@@ -104,17 +104,19 @@ def number_float(elem, doc):
     This function also keeps track of them in a global dictionary (defined at
     the top of this file) so we can later resolve \autoref{} calls properly.
     """
-    if isinstance(elem, Image):
+    if isinstance(elem, Figure):
         fignum = f'Figure {len(figures) + 1}'
         figures[elem.identifier] = fignum
-        t = first_str(elem)
-        t.text = fignum + ': ' + t.text
+        t = first_str(elem.caption)
+        if t is not None:
+            t.text = fignum + ': ' + t.text
         return elem
     elif isinstance(elem, Table):
         tabnum = f'Table {len(tables) + 1}'
         tables[elem.parent.identifier] = tabnum
         t = first_str(elem.caption)
-        t.text = tabnum + ': ' + t.text
+        if t is not None:
+            t.text = tabnum + ': ' + t.text
         return elem
 
 

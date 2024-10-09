@@ -373,10 +373,10 @@ def number_float(elem, doc):
     This function also keeps track of them in a global dictionary (defined at
     the top of this file) so we can later resolve \autoref{} calls properly.
     """
-    if isinstance(elem, Image):
+    if isinstance(elem, Figure):
         fignum = f'Figure {len(figures) + 1}'
         figures[elem.identifier] = fignum
-        t = first_str(elem)
+        t = first_str(elem.caption)
         t.text = fignum + ': ' + t.text
         return elem
     elif isinstance(elem, Table):
