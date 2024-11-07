@@ -24,6 +24,7 @@ patterns = [
     (re.compile(r'\\tcov{([^}]+)}'), r'$\\mathbf{\\Sigma}_\\mathbf{\1}$'),
     (re.compile(r'\\ticov{([^}]+)}'), r'$\\mathbf{\\Sigma}^{-1}_\\mathbf{\1}$'),
     (re.compile(r'\\vspace{2ex}'), r''),
+    (re.compile(r'\\centering'), r''),
 ]
 
 author_pattern = re.compile(r"\\author\[(.*)\]{(.*)}")
